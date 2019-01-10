@@ -1,4 +1,4 @@
-# Collectorh
+# Collector
 ---
 
 Collector is an application that is used to provide interactive tracking for the labs being performed for the session titled:   
