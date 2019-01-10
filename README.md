@@ -1,45 +1,21 @@
-# MedSeach
+# Collectorh
 ---
 
-MedSearch is a sample application that is used to help demonstrate application modernization.
+Collector is an application that is used to provide interactive tracking for the labs being performed for the session titled:   
 
-MedSearch enables users to search for medical providers across the nation. Searching by name, location, or speciality is provided.  Review the applicaiton capabilities to help understand what will be used in following labs.
+#### Problem Determination and Troubleshooting
 
+The session is part of the larger IBM® Cloud Fast Start 2.0 at locations in North America, Europe, and Asia Pacific.
 
-### MedSearch - Home page
+Each team is assigned a color. This color is also used for K8s namespace when needed.
+The dashboard uses the color assigned each team to track lab progress.  The use of the colors should make it very easy for teams to track their progress.  
 
-Press the 'Begin' button to start searching for medical providers.
-
-![](images/medsearch01.png)
-
-
-### MedSearch - Search parameters
-
-Provide one or more search parameters and press the 'Search' button to search the data repository.
-
-![](images/medsearch02.png)
-
-
-### MedSearch - Search reults
-
-Results matching the search criteria are provided. Press the 'Detail' button at the right hand side of the results to view detail information.  Press the 'New search' button to return to the Search parameters screen.
+The interface will dynamically add the team/namespace/color row once the first lab is completed.  After the first lab is completed each green checkmark will be added as the appropriate labs is completed.
  
-
-![](images/medsearch03.png)
-
-
-### MedSearch - Detail provider information
-
-Detail information for the selected provider.  Press the 'Return' button to return to the previous Search results screen.  Press the 'New search' button return to the Search parameters screen.
-
-![](images/medsearch04.png)
+There is also count down timer that show displays the remaining time left for the labs.
 
 
-### MedSearch - About
-
-Press the navigation button (three bars) in the upper left to view information about the technology and data used to create MedSearch. 
-
-![](images/medsearch05.png)
+![](images/status.png)
 
 
 
@@ -48,14 +24,13 @@ Press the navigation button (three bars) in the upper left to view information a
 
 ## Maintainer
 
-Dave Weilert
+IBM ICP CoC
 
-https://github.com/IBM-ICP-CoC/MedSearch 
-
+https://github.com/IBM-ICP-CoC/collector
 
 ## License
 
-Copyright 2018 Dave Weilert
+Copyright 2019 IBM® ICP COC Team
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the
 "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish,
