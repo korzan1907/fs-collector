@@ -1,0 +1,279 @@
+<doctype html>
+<html lang="en">
+
+<head>
+    <title>MedSearch</title>
+
+    <!-- Copyright 2018 Dave Weilert
+
+		Permission is hereby granted, free of charge, to any person obtaining a copy of this software 
+		and associated documentation files (the "Software"), to deal in the Software without restriction, 
+		including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+		and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, 
+		subject to the following conditions:
+
+		The above copyright notice and this permission notice shall be included in all copies or substantial 
+		portions of the Software.
+
+		THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT 
+		LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. 
+		IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
+		WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE 
+		SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+		-->
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <!-- Images -->
+    <link rel="icon" type="image/png" href="images/drsearchBlank.png">
+    
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <!-- Bootstrap-table CSS -->
+    <!-- <link rel="stylesheet" href="css/bootstrap-table.min.css"> -->
+    <!-- Sidenav CSS -->
+    <link rel="stylesheet" href="css/sidenav.css">
+
+    <!-- Scripts -->
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <!-- <script src="js/bootstrap-table.min.js"></script> -->
+</head>
+
+<body>
+    <!-- ==================================== -->
+    <!-- Side nav section                     -->
+    <!-- ==================================== -->
+    <div id="sideNavigation" class="sidenav">
+        <div style="margin-top: 30px;">
+            <span style="margin-top: 30px; margin-bottom: 20px;">
+            <img class="mx-auto d-block" src="images/ibm-cloud.png" alt="drsearch" height="70" width="140">
+            </span>
+        </div>
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a href="javascript:about()">About Collector</a>
+        <a href="javascript:feedbackShow()">Time</a>
+        <a href="javascript:feedbackHide()">Status</a>
+    </div>
+    <div id="main">
+        <!-- ==================================== -->
+        <!-- Header section                       -->
+        <!-- ==================================== -->
+        <div class="container">
+            <div class="container" id="titlebar" style="margin-top: 10px;">
+                <button class="btn btn-outline-primary my-2 my-sm-0 btn-sm pull-xs-left float-left" id="menuButton" type="button" onclick="openNav()">
+                    &#9776;
+                </button>
+                <h4>
+                    <span style="margin-left: 20px; font-family: Arial Rounded MT Bold, Helvetica Rounded, Arial, sans-serif;">
+                    	Collector
+                    </span>
+                </h4>
+                <span  id="timeleft" style="font-size: 300%; text-align: center; color: blue; font-family: Arial Rounded MT Bold, Helvetica Rounded, Arial, sans-serif;" >
+                        <p id="labtime"></p>
+                </span>
+
+
+            </div>
+        </div>
+
+
+        <script>
+        // Set the date we're counting down to
+        var countDownDate = new Date("Jan 9, 2019 23:37:25").getTime();
+        
+        // Update the count down every 1 second
+        var x = setInterval(function() {
+        
+          // Get todays date and time
+          var now = new Date().getTime();
+            
+          // Find the distance between now and the count down date
+          var distance = countDownDate - now;
+            
+          // Time calculations for days, hours, minutes and seconds
+          var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+          var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            
+          // Output the result in an element with id="demo"
+          document.getElementById("labtime").innerHTML = "Remaining time: " + hours + "h "
+          + minutes + "m " + seconds + "s ";
+            
+          // If the count down is over, write some text 
+          if (distance < 0) {
+            clearInterval(x);
+            document.getElementById("labtime").innerHTML = "EXPIRED";
+          }
+        }, 1000);
+        </script>
+
+
+
+        <!-- ==================================== -->
+        <!-- Status section                       -->
+        <!-- ==================================== -->
+        <div class="container">
+            <hr>
+            <div class="container" id="splash">
+                <div class="text-center">
+
+                    <div class="container">
+                        <h5>Completed Labs</h5>
+                        <table class="table table-condensed">
+                            <thead>
+                            <tr style="text-align: center;">
+                                <th>namespace</th>
+                                <th>01</th>
+                                <th>02</th>
+                                <th>03</th>
+                                <th>04</th>
+                                <th>05</th>
+                                <th>06</th>
+                                <th>07</th>
+                                <th>08</th>
+                                <th>09</th>
+                                <th>10</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr style="text-align: center;">
+                                <td style="background-color: red; color: white; font-size: 125%">red</td>
+                                <td><img src="images/gcm.png" height="20" width="20"></td>
+                                <td><img src="images/gcm.png" height="20" width="20"></td>
+                                <td><img src="images/gcm.png" height="20" width="20"></td>
+                                <td><img src="images/gcm.png" height="20" width="20"></td>
+                                <td><img src="images/gcm.png" height="20" width="20"></td>
+                                <td><img src="images/gcm.png" height="20" width="20"></td>
+                                <td><img src="images/gcm.png" height="20" width="20"></td>
+                                <td><img src="images/gcm.png" height="20" width="20"></td>
+                                <td><img src="images/gcm.png" height="20" width="20"></td>
+                                <td><img src="images/gcm.png" height="20" width="20"></td>
+                            </tr>      
+                            <tr style="text-align: center;">
+                                <td style="background-color: blue; color: white">blue</td>
+                                <td><img src="images/gcm.png" height="20" width="20"></td>
+                                <td><img src="images/gcm.png" height="20" width="20"></td>
+                                <td><img src="images/gcm.png" height="20" width="20"></td>
+                                <td><img src="images/gcm.png" height="20" width="20"></td>
+                                <td><img src="images/gcm.png" height="20" width="20"></td>
+                                <td><img src="images/gcm.png" height="20" width="20"></td>
+                                <td><img src="images/gcm.png" height="20" width="20"></td>
+                                <td><img src="images/gcm.png" height="20" width="20"></td>
+                                <td><img src="images/gcm.png" height="20" width="20"></td>
+                                <td><img src="images/gcm.png" height="20" width="20"></td>
+                            </tr>
+                            <tr style="text-align: center;">
+                                <td style="background-color:green ;color: white">green</td>
+                                <td><img src="images/gcm.png" height="20" width="20"></td>
+                                <td><img src="images/gcm.png" height="20" width="20"></td>
+                                <td><img src="images/gcm.png" height="20" width="20"></td>
+                                <td><img src="images/gcm.png" height="20" width="20"></td>
+                                <td><img src="images/gcm.png" height="20" width="20"></td>
+                                <td><img src="images/gcm.png" height="20" width="20"></td>
+                                <td><img src="images/gcm.png" height="20" width="20"></td>
+                                <td><img src="images/gcm.png" height="20" width="20"></td>
+                                <td><img src="images/gcm.png" height="20" width="20"></td>
+                                <td><img src="images/gcm.png" height="20" width="20"></td>
+                            </tr>
+                            <tr style="text-align: center;">
+                                <td style="background-color:orange; color: white">orange</td>
+                                <td><img src="images/gcm.png" height="20" width="20"></td>
+                                <td><img src="images/gcm.png" height="20" width="20"></td>
+                                <td><img src="images/gcm.png" height="20" width="20"></td>
+                                <td><img src="images/gcm.png" height="20" width="20"></td>
+                                <td><img src="images/gcm.png" height="20" width="20"></td>
+                                <td><img src="images/gcm.png" height="20" width="20"></td>
+                                <td><img src="images/gcm.png" height="20" width="20"></td>
+                                <td><img src="images/gcm.png" height="20" width="20"></td>
+                                <td><img src="images/gcm.png" height="20" width="20"></td>
+                                <td><img src="images/gcm.png" height="20" width="20"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+    <!-- ==================================== -->
+    <!-- About Modal section                  -->
+    <!-- ==================================== -->
+    <div class="modal fade" id="aboutModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Collector<br>
+                            <span id="version" style="font-size: 60%""></span>
+                        </h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div style="background-color: #eee;">
+                    <div class="align-middle">
+                        <div style="font-size: 80%; text-left: center; margin-bottom: 25px; margin-bottom: 25px; margin-left: 10px;  margin-right: 10px;">
+                        	<p>&nbsp;</p>
+                        	<p>This application tracks completion of labs for Problem Diagnosis and Troubleshooting.  
+                                This training an enablement is part of IBM® Fast Start 2.0 - 2019.
+                            </p> 
+                        </div>
+
+                        <div style="font-size: 80%; text-align: center; margin-top: 25px; margin-bottom: 25px;">
+    	                    <hr>IBM TECHNOLOGIES USED
+    	                </div>
+    	                <div style="text-align: center; font-size: 80%;" >
+                        		IBM Cloud Private<br>
+        	            </div>                        
+                        <div class="row text-center" style="padding-left: 70px;">
+                            <div class="col-sm-3">
+                                &nbsp;
+                            </div>
+                            <div class="col-sm-3" style="margin-top: 15px;">
+                                <img src="images/ibm-cloud.png" style="height:60px; width:auto;" class="mx-auto d-block">
+                            </div>
+                            <div class="col-sm-3" style="margin-top: 5px;">
+                                &nbsp;
+                            </div>
+                        </div>
+                        
+ 
+                        <div style="font-size: 80%; text-align: center; margin-top: 25px; margin-bottom: 25px;">
+                        	<hr>USER INTERFACE TECHNOLOGIES USED
+                        </div>
+                        <div class="row text-center" style="padding-left: 70px;">
+                            <div class="col-sm-3">
+                                <img src="images/bootstrap-stack.png" style="height:40px; width:auto;" class="mx-auto d-block">
+                            </div>
+                            <div class="col-sm-3" style="margin-top: 15px;">
+                                <img src="images/jQuery.png" style="height:18px; width:auto;" class="mx-auto d-block">
+                            </div>
+                            <div class="col-sm-3" style="margin-top: 5px;">
+                                <img src="images/nodejs.png" style="height:25px; width:auto;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer" style="background-color: #eee;">
+                    &nbsp;
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ==================================== -->
+    <!-- Scripts section                      -->
+    <!-- ==================================== -->
+    <!-- Socket.io Script -->
+    <script src="/socket.io/socket.io.js"></script>
+    <!-- Script -->
+    <script src="js/drsmain.js"></script>
+
+</body>
+
+</html>
