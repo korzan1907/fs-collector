@@ -25,8 +25,7 @@ There is also count down timer that show displays the remaining time left for th
 ## Maintainer
 
 IBM ICP CoC
-
-https://github.com/IBM-ICP-CoC/collector
+<br>
 
 ## License
 
