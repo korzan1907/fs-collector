@@ -28,7 +28,7 @@ var appname = 'Collector';
 //------------------------------------------------------------------------------
 var fs = require('fs-extra');
 var express = require('express');
-var Q = require('q');
+//var Q = require('q');
 var app = express();
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
@@ -36,10 +36,10 @@ var bodyParser = require('body-parser');
 var commandLineArgs = require('command-line-args');
 var commandLineUsage = require('command-line-usage');
 var chalk = require('chalk');
-var multer = require('multer');
-var path = require('path');
+//var multer = require('multer');
+//var path = require('path');
 var cors = require('cors');
-var request = require('request');
+//var request = require('request');
 
 var cllr = require('./lib/cllr');
 var utl = require('./lib/utl');
