@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>MedSearch</title>
+    <title>FS Collector</title>
 
     <!-- Copyright 2018 Dave Weilert
 
@@ -27,12 +27,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     
     <!-- Images -->
-    <link rel="icon" type="image/png" href="images/drsearchBlank.png">
+    <link rel="icon" type="image/png" href="/favicon-16x16.png"/>
     
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="css/bootstrap.min.css">
-    <!-- Bootstrap-table CSS -->
-    <!-- <link rel="stylesheet" href="css/bootstrap-table.min.css"> -->
+
     <!-- Sidenav CSS -->
     <link rel="stylesheet" href="css/sidenav.css">
 
@@ -54,8 +53,8 @@
         </div>
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
         <a href="javascript:about()">About Collector</a>
-        <a href="javascript:feedbackShow()">Time</a>
-        <a href="javascript:feedbackHide()">Status</a>
+        <a href="javascript:setTimer()">Start Timer</a>
+        <a href="javascript:clearStats()">Clear stats</a>
     </div>
     <div id="main">
         <!-- ==================================== -->
@@ -71,45 +70,11 @@
                     	Collector
                     </span>
                 </h4>
-                <span  id="timeleft" style="font-size: 300%; text-align: center; color: blue; font-family: Arial Rounded MT Bold, Helvetica Rounded, Arial, sans-serif;" >
+                <span id="timeleft" style="font-size: 300%; text-align: center; color: black; font-family: Arial Rounded MT Bold, Helvetica Rounded, Arial, sans-serif;" >
                         <p id="labtime"></p>
                 </span>
-
-
             </div>
         </div>
-
-
-        <script>
-        // Set the date we're counting down to
-        var countDownDate = new Date("Jan 9, 2019 23:37:25").getTime();
-        
-        // Update the count down every 1 second
-        var x = setInterval(function() {
-        
-          // Get todays date and time
-          var now = new Date().getTime();
-            
-          // Find the distance between now and the count down date
-          var distance = countDownDate - now;
-            
-          // Time calculations for days, hours, minutes and seconds
-          var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-          var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-          var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-            
-          // Output the result in an element with id="demo"
-          document.getElementById("labtime").innerHTML = "Remaining time: " + hours + "h "
-          + minutes + "m " + seconds + "s ";
-            
-          // If the count down is over, write some text 
-          if (distance < 0) {
-            clearInterval(x);
-            document.getElementById("labtime").innerHTML = "EXPIRED";
-          }
-        }, 1000);
-        </script>
-
 
 
         <!-- ==================================== -->
@@ -119,85 +84,101 @@
             <hr>
             <div class="container" id="splash">
                 <div class="text-center">
-
                     <div class="container">
                         <h5>Completed Labs</h5>
-                        <table class="table table-condensed">
-                            <thead>
-                            <tr style="text-align: center;">
-                                <th>namespace</th>
-                                <th>01</th>
-                                <th>02</th>
-                                <th>03</th>
-                                <th>04</th>
-                                <th>05</th>
-                                <th>06</th>
-                                <th>07</th>
-                                <th>08</th>
-                                <th>09</th>
-                                <th>10</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr style="text-align: center;">
-                                <td style="background-color: red; color: white; font-size: 125%">red</td>
-                                <td><img src="images/gcm.png" height="20" width="20"></td>
-                                <td><img src="images/gcm.png" height="20" width="20"></td>
-                                <td><img src="images/gcm.png" height="20" width="20"></td>
-                                <td><img src="images/gcm.png" height="20" width="20"></td>
-                                <td><img src="images/gcm.png" height="20" width="20"></td>
-                                <td><img src="images/gcm.png" height="20" width="20"></td>
-                                <td><img src="images/gcm.png" height="20" width="20"></td>
-                                <td><img src="images/gcm.png" height="20" width="20"></td>
-                                <td><img src="images/gcm.png" height="20" width="20"></td>
-                                <td><img src="images/gcm.png" height="20" width="20"></td>
-                            </tr>      
-                            <tr style="text-align: center;">
-                                <td style="background-color: blue; color: white">blue</td>
-                                <td><img src="images/gcm.png" height="20" width="20"></td>
-                                <td><img src="images/gcm.png" height="20" width="20"></td>
-                                <td><img src="images/gcm.png" height="20" width="20"></td>
-                                <td><img src="images/gcm.png" height="20" width="20"></td>
-                                <td><img src="images/gcm.png" height="20" width="20"></td>
-                                <td><img src="images/gcm.png" height="20" width="20"></td>
-                                <td><img src="images/gcm.png" height="20" width="20"></td>
-                                <td><img src="images/gcm.png" height="20" width="20"></td>
-                                <td><img src="images/gcm.png" height="20" width="20"></td>
-                                <td><img src="images/gcm.png" height="20" width="20"></td>
-                            </tr>
-                            <tr style="text-align: center;">
-                                <td style="background-color:green ;color: white">green</td>
-                                <td><img src="images/gcm.png" height="20" width="20"></td>
-                                <td><img src="images/gcm.png" height="20" width="20"></td>
-                                <td><img src="images/gcm.png" height="20" width="20"></td>
-                                <td><img src="images/gcm.png" height="20" width="20"></td>
-                                <td><img src="images/gcm.png" height="20" width="20"></td>
-                                <td><img src="images/gcm.png" height="20" width="20"></td>
-                                <td><img src="images/gcm.png" height="20" width="20"></td>
-                                <td><img src="images/gcm.png" height="20" width="20"></td>
-                                <td><img src="images/gcm.png" height="20" width="20"></td>
-                                <td><img src="images/gcm.png" height="20" width="20"></td>
-                            </tr>
-                            <tr style="text-align: center;">
-                                <td style="background-color:orange; color: white">orange</td>
-                                <td><img src="images/gcm.png" height="20" width="20"></td>
-                                <td><img src="images/gcm.png" height="20" width="20"></td>
-                                <td><img src="images/gcm.png" height="20" width="20"></td>
-                                <td><img src="images/gcm.png" height="20" width="20"></td>
-                                <td><img src="images/gcm.png" height="20" width="20"></td>
-                                <td><img src="images/gcm.png" height="20" width="20"></td>
-                                <td><img src="images/gcm.png" height="20" width="20"></td>
-                                <td><img src="images/gcm.png" height="20" width="20"></td>
-                                <td><img src="images/gcm.png" height="20" width="20"></td>
-                                <td><img src="images/gcm.png" height="20" width="20"></td>
-                            </tr>
-                            </tbody>
-                        </table>
+                        <div id="stats">
+                            <table class="table table-condensed">
+                                <thead>
+                                    <tr style="text-align: center;">
+                                        <th>namespace</th>
+                                        <th>01</th>
+                                        <th>02</th>
+                                        <th>03</th>
+                                        <th>04</th>
+                                        <th>05</th>
+                                        <th>06</th>
+                                        <th>07</th>
+                                        <th>08</th>
+                                        <th>09</th>
+                                        <th>10</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
+
+        <!-- ==================================== -->
+        <!-- Clear/Reset section       -->
+        <!-- ==================================== -->
+
+        <div id="deleteModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div id="">
+                            <h4 class="modal-title" ><span style="font-family: Arial Rounded MT Bold, Helvetica Rounded, Arial, sans-serif; color: blue;">Confirm clear stats</span></h4>
+                        </div>
+                    </div>
+                    <div class="modal-body" id="delete_modalBody">
+                        <p>You are about to delete the lab completion statistics.</p>
+                        <p>Do you want to proceed?</p>
+                        <p class="debug-url"></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-primary confirm_delete" data-dismiss="modal">Delete stats</button>
+                        <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <!-- ==================================== -->
+        <!-- Timer Modal section       -->
+        <!-- ==================================== -->
+        <div class="modal fade" id="timerModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div id="dirHeader">
+                            <h4 class="modal-title"><span style="font-family: Arial Rounded MT Bold, Helvetica Rounded, Arial, sans-serif; color: blue;">TIMER - Set and Start</span></h4>
+                        </div>
+                    </div>
+                    <div class="modal-body">
+
+                        <div class="col-sm-3" style="margin-top: 5px;">
+                            &nbsp;
+                        </div>
+
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="xyz">Total timer minutes to count down</span>
+                            </div>
+                            <input id="minutes" type="text" class="form-control form-control-sm" placeholder="numeric whole number">
+                            <button id="validateBtn" type="button" class="btn btn-outline-primary btn-sm" onclick="timer()" style="margin: 5px;">
+                            &nbsp;&nbsp;&nbsp;Start timer&nbsp;&nbsp;&nbsp;
+                            </button>
+                        </div>
+
+                        <div class="col-sm-3" style="margin-top: 5px;">
+                            &nbsp;
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
 
 
     <!-- ==================================== -->
@@ -272,7 +253,7 @@
     <!-- Socket.io Script -->
     <script src="/socket.io/socket.io.js"></script>
     <!-- Script -->
-    <script src="js/drsmain.js"></script>
+    <script src="js/cllrmain.js"></script>
 
 </body>
 

@@ -136,24 +136,21 @@ app.get('/quit', function(req, res) {
 });
 
 app.get('/status', function(req, res) {
+    var name = '';
+    var ns = '';
     if (typeof req.query.app !== 'undefined') {
-        cllr.app_name = req.query.app;
+        name = req.query.app;
     }
     if (typeof req.query.ns !== 'undefined') {
-        cllr.app_namespace = req.query.namespace;
-    }
-    if (typeof req.query.user !== 'undefined') {
-        cllr.app_user = req.query.user;
+        ns = req.query.ns;
     }
 
-    console.log('App: ' + cllr.app_name + ' NS: ' + cllr.app_namespace + ' User: ' + cllr.app_user);
+    addData(ns, name);
 
     res.writeHead(200, {
         'Content-Type': 'text/plain'
     });
     res.end('GotIt\n');
-
-
 });
   
 
@@ -163,9 +160,18 @@ app.get('/status', function(req, res) {
 io.on('connection', (client) => {
 
     setInterval(function() {
-        let result = cllr.data;
+        //let result = {};
+        //result.data = cllr.data;
+        //result.max = cllr.maxData;
+
+        let result = blbData();
         //console.log('send data');
-        client.emit('data', result)
+        if (typeof result.items !== 'undefined') {
+            if (typeof result.items[0] !== 'undefined') {
+                client.emit('data', result)
+                utl.logMsg('cllrM087 - Data sent to dashboard');
+            } 
+        }
     }, 5000);
 
     client.on('getVersion', function(data) {
@@ -173,6 +179,13 @@ io.on('connection', (client) => {
         var result = {'version': softwareVersion};
         client.emit('version', result);
     });
+
+    client.on('clearStats', function() {
+        utl.logMsg('cllrM093 - Request to clear stats', 'server');
+        cllr.nsData = [];
+        cllr.cntData = [];
+    });
+
 
     client.on('getlists', function(data) {
         utl.logMsg('cllrM047 - List request', 'server');
@@ -182,9 +195,6 @@ io.on('connection', (client) => {
     });
 
 });
-
-
-
 
   
 //------------------------------------------------------------------------------
@@ -230,6 +240,43 @@ function splash() {
     console.log(adv);
 }
 
+function addData(ns, name) {
+    if (typeof cllr.nsData[ns +'-'+ name] !== 'undefined') {
+        if (typeof cllr.cntData[ns] !== 'undefined' ) {
+            // increment by one
+            var cnt = cllr.cntData[ns];
+            cllr.cntData[ns] = cnt + 1;
+        } else {
+            // create and set to one
+            cllr.cntData[ns] = 1;
+        }
+    } else {
+
+        if (typeof cllr.cntData[ns] !== 'undefined' ) {
+            // increment by one
+            var cnt = cllr.cntData[ns];
+            cllr.cntData[ns] = cnt + 1;
+        } else {
+            // create and set to one
+            cllr.cntData[ns] = 1;
+        }
+    }
+}
+
+function blbData() {
+    var data = {"items": []};
+    var max = 0;
+    for (var key in cllr.cntData) {
+        var row = {"team": key, "cnt": cllr.cntData[key]};
+        data.items.push(row);
+        if (cllr.cntData[key] > max) {
+            max = cllr.cntData[key];
+        }
+    }
+    data.max = max;
+    //console.log(JSON.stringify(data,null,2))
+    return data;
+}
 
 //------------------------------------------------------------------------------
 //begin processing

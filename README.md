@@ -10,13 +10,18 @@ The session is part of the larger IBM® Cloud Fast Start 2.0 at locations in Nor
 Each team is assigned a color. This color is also used for K8s namespace when needed.
 The dashboard uses the color assigned each team to track lab progress.  The use of the colors should make it very easy for teams to track their progress.  
 
-The interface will dynamically add the team/namespace/color row once the first lab is completed.  After the first lab is completed each green checkmark will be added as the appropriate labs is completed.
+> The interface will dynamically add the team/namespace/color row once the first lab is completed.  After the first lab is completed each green checkmark will be added as the appropriate labs is completed.
  
 There is also count down timer that show displays the remaining time left for the labs.
 
 
 ![](images/status.png)
 
+> &#9888; Cautions
+
+:warning:
+
+> &#9997;
 
 
 
