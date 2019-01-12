@@ -49,6 +49,7 @@ socket.on('version', function(data) {
 });
 
 socket.on('data', function(data) {
+	console.log(JSON.stringify(data,null,2))
 	if (updateScreen) {	
 		var hdr = buildTblHeader(data.max);
 		var stats = buildTblStats(data, data.max);

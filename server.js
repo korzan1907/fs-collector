@@ -137,16 +137,16 @@ app.get('/quit', function(req, res) {
     stopAll();
 });
 
-app.get('/status', function(req, res) {
+app.get('/status/:ns/:app', function(req, res) {
     iCnt++;
-    var name = '';
-    var ns = '';
-    if (typeof req.query.app !== 'undefined') {
-        name = req.query.app;
-    }
-    if (typeof req.query.ns !== 'undefined') {
-        ns = req.query.ns;
-    }
+    var name = req.params.app;
+    var ns = req.param.ns;
+//    if (typeof req.params.app !== 'undefined') {
+//        name = req.query.app;
+//    }
+//    if (typeof req.query.ns !== 'undefined') {
+//        ns = req.query.ns;
+//    }
 
     addData(ns, name);
 
@@ -190,6 +190,13 @@ io.on('connection', (client) => {
         utl.logMsg('cllrM093 - Request to clear stats received, all stats removed.', 'server');
         cllr.nsData = [];
         cllr.cntData = [];
+        posted = '';
+        oldCnt = 0;
+        newCnt = 0;
+        sendCnt = 0;
+        bldCnt = 0;
+        iCnt = 0;
+        oCnt = 0;
     });
 
 
