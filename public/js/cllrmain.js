@@ -21,7 +21,8 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 var version = 'Get from server';         // store software version
 var socket = io.connect();               // sockert io related
 var defMax = 10;                         // default number of labs numbers in header
-var clock;                               // interval timer for clock
+var clock = null;                        // interval timer for clock
+var started = false;
 var updateScreen = true;                 // control if stats table will get updated
 var checkMark = '&#x2705';               // emoji to display as the checkmark
 var timeColor = 'lime'                   // color of numbers in timer display
@@ -202,9 +203,15 @@ function startClock(cnt) {
 	// Set the date we're counting down to based on minutes provided
 	var countDownDate = new Date(cnt);
 
+	// if timer is already started clear the timer
+	if (started) {
+		clearInterval(clock);
+		started = false;
+	}
+
 	// Update the count down every 1 second
 	clock = setInterval(function() {
-
+		started = true;
   		// Get todays date and time
   		var now = new Date().getTime();
 	
@@ -226,6 +233,7 @@ function startClock(cnt) {
   		// If the count down is over, write some text 
   		if (distance < 0) {
 			clearInterval(clock);
+			clock = null;
 			updateScreen = false;
 			document.getElementById("labtime").innerHTML = "&#x1F6D1;" + "&nbsp;STOP";
   		}

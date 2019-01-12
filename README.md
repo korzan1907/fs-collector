@@ -17,12 +17,28 @@ There is also count down timer that show displays the remaining time left for th
 
 ![](images/status.png)
 
-> &#9888; Cautions
+#### Set and start timer
 
-:warning:
+The time is set by selecting the navigation button (box with three bars) in the uppper left of the screen.  Select option <b>Start Timer</b> to begin.
 
-> &#9997;
+![](images/slideout.png)
 
+
+Once selected a modal screen is presented.  Enter the number of minutes for the timer to run and press the <b>Start timer</b> button.
+
+![](images/timer.png)
+
+When the timer has completed a Stop message will be displayed.
+
+![](images/stop.png)
+
+#### Clear stats
+
+Clear the timer by selecting the navigation button (box with three bars) in the uppper left of the screen.  Select option <b>Clear stats</b> to begin.
+
+Once selected a modal screen is presented.  Press the <b>Delete stats</b> button to clear the stats.
+
+![](images/clear.png)
 
 
 <br><br>
