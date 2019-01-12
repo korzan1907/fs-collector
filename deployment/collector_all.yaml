@@ -41,13 +41,3 @@ spec:
       targetPort: 3000
       protocol: TCP
       name: collector
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: collector-config
-  namespace: default
-data:
-  COLLECTOR_CONFIG: 'http://collector.default’
-
-
