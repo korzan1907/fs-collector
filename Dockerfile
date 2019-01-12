@@ -1,7 +1,7 @@
 FROM mhart/alpine-node
 
-CMD mkdir /drs
-WORKDIR /drs
+CMD mkdir /collector
+WORKDIR /collector
 
 COPY server.js .
 COPY LICENSE .
@@ -11,9 +11,8 @@ COPY medData.txt .
 COPY lib ./lib
 COPY public ./public
 
-
 RUN npm install
 
-EXPOSE 4200
+EXPOSE 3000
 
 CMD ["node", "server.js"]
