@@ -44,15 +44,17 @@ var cors = require('cors');
 var cllr = require('./lib/cllr');
 var utl = require('./lib/utl');
 
+var oldCnt = 0;
+var newCnt = 0;
+var sendCnt = 0;
+var bldCnt = 0;
+var iCnt = 0;
+var oCnt = 0;
+var posted = '::';
+
 //------------------------------------------------------------------------------
 // Application variables
 //------------------------------------------------------------------------------
-var colors = '';
-
-var resetReq = false;
-var statMessages;
-var dashline = '---------------------------------';
-var validDir = true;
 var port = 3000;
 var options;
 var optionDefinitions = [{
@@ -136,6 +138,7 @@ app.get('/quit', function(req, res) {
 });
 
 app.get('/status', function(req, res) {
+    iCnt++;
     var name = '';
     var ns = '';
     if (typeof req.query.app !== 'undefined') {
@@ -160,17 +163,20 @@ app.get('/status', function(req, res) {
 io.on('connection', (client) => {
 
     setInterval(function() {
-        //let result = {};
-        //result.data = cllr.data;
-        //result.max = cllr.maxData;
-
-        let result = blbData();
-        //console.log('send data');
-        if (typeof result.items !== 'undefined') {
-            if (typeof result.items[0] !== 'undefined') {
-                client.emit('data', result)
-                utl.logMsg('cllrM087 - Data sent to dashboard');
-            } 
+        //  check if any new data has been received
+        if (iCnt !== oCnt) {
+            oCnt = iCnt;
+            let result = blbData();
+            if (typeof result.items !== 'undefined') {
+                if (typeof result.items[0] !== 'undefined') {
+                    if (newCnt !== oldCnt) {
+                        oldCnt = newCnt;
+                        sendCnt++;
+                        client.emit('data', result)
+                        utl.logMsg('cllrM087 - Data sent counts: Build Cnt@ ' + bldCnt + '   Send Cnt@ ' + sendCnt);
+                    } 
+                }
+            }
         }
     }, 5000);
 
@@ -181,7 +187,7 @@ io.on('connection', (client) => {
     });
 
     client.on('clearStats', function() {
-        utl.logMsg('cllrM093 - Request to clear stats', 'server');
+        utl.logMsg('cllrM093 - Request to clear stats received, all stats removed.', 'server');
         cllr.nsData = [];
         cllr.cntData = [];
     });
@@ -241,40 +247,39 @@ function splash() {
 }
 
 function addData(ns, name) {
-    if (typeof cllr.nsData[ns +'-'+ name] !== 'undefined') {
-        if (typeof cllr.cntData[ns] !== 'undefined' ) {
+    var key = ns +'-'+ name;
+    // has key been seen before?
+    if (posted.indexOf(key) === -1 ) {
+        posted = posted + key + '::';
+       if (typeof cllr.cntData[ns] !== 'undefined' ) {
             // increment by one
             var cnt = cllr.cntData[ns];
             cllr.cntData[ns] = cnt + 1;
+            utl.logMsg('cllrM041 - Increment ' + key + ' count: ' + JSON.stringify(cllr.cntData[ns],null,4));
         } else {
             // create and set to one
             cllr.cntData[ns] = 1;
+            utl.logMsg('cllrM040 - Created  ' + key + ' count: ' + JSON.stringify(cllr.cntData[ns],null,4));
         }
     } else {
-
-        if (typeof cllr.cntData[ns] !== 'undefined' ) {
-            // increment by one
-            var cnt = cllr.cntData[ns];
-            cllr.cntData[ns] = cnt + 1;
-        } else {
-            // create and set to one
-            cllr.cntData[ns] = 1;
-        }
+        utl.logMsg('cllrM039 - Already posted, key: ' + key);
     }
 }
 
 function blbData() {
     var data = {"items": []};
     var max = 0;
+    newCnt = 0;
     for (var key in cllr.cntData) {
         var row = {"team": key, "cnt": cllr.cntData[key]};
         data.items.push(row);
         if (cllr.cntData[key] > max) {
             max = cllr.cntData[key];
         }
+        newCnt = newCnt + cllr.cntData[key]
     }
     data.max = max;
-    //console.log(JSON.stringify(data,null,2))
+    bldCnt++
     return data;
 }
 
@@ -283,4 +288,3 @@ function blbData() {
 //------------------------------------------------------------------------------
 startAll();
 //------------------------------------------------------------------------------
-

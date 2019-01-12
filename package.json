@@ -1,7 +1,7 @@
 {
-  "name": "medsearch",
+  "name": "collector",
   "version": "1.0.0",
-  "description": "MedSearch",
+  "description": "Collector of stats for labs deploying containers",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
