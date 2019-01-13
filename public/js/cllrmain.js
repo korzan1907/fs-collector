@@ -26,7 +26,7 @@ var started = false;
 var updateScreen = true;                 // control if stats table will get updated
 var checkMark = '&#x2705';               // emoji to display as the checkmark
 var timeColor = 'lime'                   // color of numbers in timer display
-var blackText = '.beige.wheat.pink.khaki.yellow.tan.'
+var blackText = '.beige.wheat.pink.khaki.yellow.tan.yellowgreen'
 //----------------------------------------------------------
 // document ready
 //----------------------------------------------------------
@@ -154,7 +154,7 @@ function buildTblHeader(max) {
 	return rtn;
 }
 
-// build the stats table completion inf
+// build the stats table for all reported namespaces / team / color
 function buildTblStats(data, max) {
 	if (max < defMax ) {
 		max = defMax;
@@ -164,17 +164,23 @@ function buildTblStats(data, max) {
 	var color;
 	var cnt;
 	var tColor;
+	// loop all entires and create the row in the stats table
 	for (var i = 0; i < hl; i++) {
 		color = data.items[i].team;
 		color = color.trim();
 		if (color.length > 0) {
 			color = color.toLowerCase();
-			
+			// default namespace gets changed to yellowgreen
+			if (color === 'default') {
+				color = 'yellowgreen';
+			}
+			// set the font color to black or white
 			if (blackText.indexOf(color) > -1) {
 				tColor = 'black';
 			} else {
 				tColor = 'white';
 			}
+			// build the table stats data for this entry
 			rtn = rtn + '<tr style="text-align: center;">' 
 			+ '<td style="background-color: ' 
 			+ color 
@@ -191,7 +197,6 @@ function buildTblStats(data, max) {
 				}
 			}
 			rtn = rtn + '<td style="background-color: ' + color + ';">&nbsp;</td></tr>'
-
 		} 
 	}
 	rtn = rtn + '</tbody></table>'
