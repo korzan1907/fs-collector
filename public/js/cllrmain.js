@@ -26,7 +26,7 @@ var started = false;
 var updateScreen = true;                 // control if stats table will get updated
 var checkMark = '&#x2705';               // emoji to display as the checkmark
 var timeColor = 'lime'                   // color of numbers in timer display
-var blackText = '.beige.wheat.pink.khaki.yellow.tan.yellowgreen'
+var blackText = '.beige.wheat.pink.khaki.yellow.tan.yellowgreen.white.snow.lime.'
 //----------------------------------------------------------
 // document ready
 //----------------------------------------------------------
@@ -172,10 +172,10 @@ function buildTblStats(data, max) {
 			color = color.toLowerCase();
 			// default namespace gets changed to yellowgreen
 			if (color === 'default') {
-				color = 'yellowgreen';
+				color = 'snow';
 			}
 			// set the font color to black or white
-			if (blackText.indexOf(color) > -1) {
+			if (blackText.indexOf('.'+color+'.') > -1) {
 				tColor = 'black';
 			} else {
 				tColor = 'white';
