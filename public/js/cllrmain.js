@@ -26,7 +26,7 @@ var started = false;
 var updateScreen = true;                 // control if stats table will get updated
 var checkMark = '&#x2705';               // emoji to display as the checkmark
 var timeColor = 'lime'                   // color of numbers in timer display
-
+var blackText = '.beige.wheat.pink.khaki.yellow.tan.'
 //----------------------------------------------------------
 // document ready
 //----------------------------------------------------------
@@ -138,7 +138,9 @@ function buildTblHeader(max) {
 	if (max < defMax ) {
 		max = defMax;
 	}	
-	var rtn = '<table class="table table-condensed"><thead><tr style="text-align: center;"><th>namespace</th>';
+	var rtn = '<table class="table table-condensed"><thead>' 
+	+ '<tr style="text-align: center; font-family: Arial Rounded MT Bold, Helvetica Rounded, Arial, sans-serif;">' 
+	+ '<th>namespace</th>';
 	var tm = 0;
 	for (var m = 0; m < max; m++ ) {
 		tm = m + 1;
@@ -161,20 +163,36 @@ function buildTblStats(data, max) {
 	var rtn = '<tbody>';
 	var color;
 	var cnt;
+	var tColor;
 	for (var i = 0; i < hl; i++) {
 		color = data.items[i].team;
-		rtn = rtn + '<tr style="text-align: center;"><td style="background-color: ' + color 
-		+ '; color: white; font-size: 125%">' + color
-		+ '</td>';
-		cnt = data.items[i].cnt;
-		for (var c = 0; c < max; c++) {
-			if (c < cnt) {
-				rtn = rtn + '<td style="font-size: 125%;">' + checkMark + ';</td>';
+		color = color.trim();
+		if (color.length > 0) {
+			color = color.toLowerCase();
+			
+			if (blackText.indexOf(color) > -1) {
+				tColor = 'black';
 			} else {
-				rtn = rtn + '<td></td>'
+				tColor = 'white';
 			}
-		}
-		rtn = rtn + '<td style="background-color: ' + color + ';">&nbsp;</td></tr>'
+			rtn = rtn + '<tr style="text-align: center;">' 
+			+ '<td style="background-color: ' 
+			+ color 
+			+ '; color: ' 
+			+ tColor + '; font-size: 125%; font-family: Arial Rounded MT Bold, Helvetica Rounded, Arial, sans-serif;">' 
+			+ color
+			+ '</td>';
+			cnt = data.items[i].cnt;
+			for (var c = 0; c < max; c++) {
+				if (c < cnt) {
+					rtn = rtn + '<td style="font-size: 125%; ">' + checkMark + ';</td>';
+				} else {
+					rtn = rtn + '<td></td>'
+				}
+			}
+			rtn = rtn + '<td style="background-color: ' + color + ';">&nbsp;</td></tr>'
+
+		} 
 	}
 	rtn = rtn + '</tbody></table>'
 	return rtn;

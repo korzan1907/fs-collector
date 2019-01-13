@@ -1,7 +1,10 @@
 ## Collector deployment
 
 <br>
-Collector has three components / objects that must be create to successfully be deployed.
+Collector has three components / objects that must be created to successfully be used by the [fsapp](https://github.com/ibmicpcoc/fsapp).  
+
+<b>fsapp</b> is used in multiple sessions and will report/send data to the collector. 
+<br>
 
 | Object | Description |
 | :---: | :--- |
@@ -16,7 +19,7 @@ All objects can be created at once using the collector_all.yaml file.  Otherwise
 
 ### Modifying the collector ConfigMap. 
 
-Each namespace that will send data to the collector must create the collector-config ConfigMap in that namespace.
+Each namespace that will send data to the collector via the fsapp must create the collector-config ConfigMap in that namespace.
 
 Modify the value <b> < USING NAMESPACE > </b> of the metadata.namespace with the appropriate value.  
 

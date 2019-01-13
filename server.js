@@ -28,7 +28,6 @@ var appname = 'Collector';
 //------------------------------------------------------------------------------
 var fs = require('fs-extra');
 var express = require('express');
-//var Q = require('q');
 var app = express();
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
@@ -36,21 +35,18 @@ var bodyParser = require('body-parser');
 var commandLineArgs = require('command-line-args');
 var commandLineUsage = require('command-line-usage');
 var chalk = require('chalk');
-//var multer = require('multer');
-//var path = require('path');
 var cors = require('cors');
-//var request = require('request');
 
 var cllr = require('./lib/cllr');
 var utl = require('./lib/utl');
 
-var oldCnt = 0;
-var newCnt = 0;
-var sendCnt = 0;
-var bldCnt = 0;
-var iCnt = 0;
-var oCnt = 0;
-var posted = '::';
+//var oldCnt = 0;
+//var newCnt = 0;
+//var sendCnt = 0;
+//var bldCnt = 0;
+//var iCnt = 0;
+//var oCnt = 0;
+//var posted = '::';
 
 //------------------------------------------------------------------------------
 // Application variables
@@ -138,18 +134,9 @@ app.get('/quit', function(req, res) {
 });
 
 app.get('/status/:ns/:app', function(req, res) {
-    iCnt++;
     var name = req.params.app;
-    var ns = req.param.ns;
-//    if (typeof req.params.app !== 'undefined') {
-//        name = req.query.app;
-//    }
-//    if (typeof req.query.ns !== 'undefined') {
-//        ns = req.query.ns;
-//    }
-
+    var ns = req.params.ns;
     addData(ns, name);
-
     res.writeHead(200, {
         'Content-Type': 'text/plain'
     });
@@ -163,19 +150,10 @@ app.get('/status/:ns/:app', function(req, res) {
 io.on('connection', (client) => {
 
     setInterval(function() {
-        //  check if any new data has been received
-        if (iCnt !== oCnt) {
-            oCnt = iCnt;
-            let result = blbData();
-            if (typeof result.items !== 'undefined') {
-                if (typeof result.items[0] !== 'undefined') {
-                    if (newCnt !== oldCnt) {
-                        oldCnt = newCnt;
-                        sendCnt++;
-                        client.emit('data', result)
-                        utl.logMsg('cllrM087 - Data sent counts: Build Cnt@ ' + bldCnt + '   Send Cnt@ ' + sendCnt);
-                    } 
-                }
+        let result = blbData();
+        if (typeof result.items !== 'undefined') {
+            if (typeof result.items[0] !== 'undefined') {
+                client.emit('data', result)
             }
         }
     }, 5000);
@@ -188,13 +166,9 @@ io.on('connection', (client) => {
 
     client.on('clearStats', function() {
         utl.logMsg('cllrM093 - Request to clear stats received, all stats removed.', 'server');
-        cllr.nsData = [];
-        cllr.cntData = [];
-        posted = '';
-        oldCnt = 0;
-        newCnt = 0;
-        sendCnt = 0;
-        bldCnt = 0;
+        cllr.reported = {};
+        cllr.counted = {};
+        cllr.countkey = '';
         iCnt = 0;
         oCnt = 0;
     });
@@ -253,40 +227,42 @@ function splash() {
     console.log(adv);
 }
 
-function addData(ns, name) {
-    var key = ns +'-'+ name;
-    // has key been seen before?
-    if (posted.indexOf(key) === -1 ) {
-        posted = posted + key + '::';
-       if (typeof cllr.cntData[ns] !== 'undefined' ) {
-            // increment by one
-            var cnt = cllr.cntData[ns];
-            cllr.cntData[ns] = cnt + 1;
-            utl.logMsg('cllrM041 - Increment ' + key + ' count: ' + JSON.stringify(cllr.cntData[ns],null,4));
-        } else {
-            // create and set to one
-            cllr.cntData[ns] = 1;
-            utl.logMsg('cllrM040 - Created  ' + key + ' count: ' + JSON.stringify(cllr.cntData[ns],null,4));
+function addData(ns, pod) {
+    try {
+        // is this a new namespace
+        if (typeof cllr.counted[ns] === 'undefined'){
+            cllr.counted[ns] = 0;
+            cllr.countkey = cllr.countkey + '.' + ns;
+            utl.logMsg('cllrM709 - Added new namespace: ' + ns)
         }
-    } else {
-        utl.logMsg('cllrM039 - Already posted, key: ' + key);
+
+        // is this a new ns:pod value
+        var lkey = ns + ':' + pod;
+        if (typeof cllr.reported[lkey] === 'undefined') {
+            cllr.reported[lkey] = 0;
+            var pcnt = cllr.counted[ns];
+            pcnt++;
+            cllr.counted[ns] = pcnt;
+            utl.logMsg('cllrM701 - Increment: ' + lkey);
+        }
+    } catch (err) {
+        utl.logMsg('cllrM701 - Error adding ns: ' + ns + ' pod: ' + pod);
     }
 }
 
 function blbData() {
     var data = {"items": []};
+    var keys = cllr.countkey.split('.');
+    var hl = keys.length;
     var max = 0;
-    newCnt = 0;
-    for (var key in cllr.cntData) {
-        var row = {"team": key, "cnt": cllr.cntData[key]};
+    for (var k = 0; k < hl; k++) {
+        var row = {"team": keys[k], "cnt": cllr.counted[keys[k]]};
         data.items.push(row);
-        if (cllr.cntData[key] > max) {
-            max = cllr.cntData[key];
+        if (cllr.counted[keys[k]] > max) {
+            max = cllr.counted[keys[k]];
         }
-        newCnt = newCnt + cllr.cntData[key]
     }
     data.max = max;
-    bldCnt++
     return data;
 }
 
