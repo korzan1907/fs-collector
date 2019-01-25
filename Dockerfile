@@ -11,6 +11,8 @@ COPY README.md .
 COPY LICENSE .
 COPY lib ./lib
 COPY public ./public
+COPY solution01.html .
+COPY solution02.html .
 
 RUN npm install
 
