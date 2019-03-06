@@ -43,6 +43,7 @@ var teams;
 // labels used for UI elements
 var uiLabels = {};
 //
+var enablePrint = false;
 var courseCount = 0;
 var b2Chk = '';
 var b3Chk = '';
@@ -285,6 +286,15 @@ socket.on('version', function(data) {
 	if (typeof data.teams !== 'undefined') {
 		teams = data.teams;
 	}
+
+	// set the enablePrint control
+	if (typeof data.enablePrint !== 'undefined') {
+		enablePrint = data.enablePrint;
+	}
+
+	if (!enablePrint) {
+		$("#coursePrint").hide();
+	}	
 
 	// set the labels
 	if (typeof data.uiLabels !== 'undefined') {
