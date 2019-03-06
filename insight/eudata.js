@@ -22,69 +22,25 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
 "use strict"
+
 const cllr = require('../lib/cllr');
 
-function standardDev(values){
-    var avg = average(values);
-    
-    var squareDiffs = values.map(function(value){
-      var diff = value - avg;
-      var sqrDiff = diff * diff;
-      return sqrDiff;
-    });
-    
-    var avgSquareDiff = average(squareDiffs);
-  
-    var stdDev = Math.sqrt(avgSquareDiff);
-    return stdDev;
-}
-  
-function average(data){
-    var sum = data.reduce(function(sum, value){
-      return sum + value;
-    }, 0);
-  
-    var avg = sum / data.length;
-    return avg;
-}
-  
-//--------- format milliseconds to minutes:sesonds
-function milliTS(millis) {
-    var minutes = Math.floor(millis / 60000);
-    var seconds = ((millis % 60000) / 1000).toFixed(0);
-    var rtn = minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
-    // Example: 9:23 append leading zero
-    if (rtn.length < 5) {
-        rtn = '0' + rtn;
-    }
-    if (rtn.length < 4) {
-        rtn = '00' + rtn;
-    }
-    return rtn;
-}
+const euData = 
+{
+    "steelblue": [],
+    "tomato": []
+   }
 
-//------------------------------------------------------------------------------
-// common routines
 //------------------------------------------------------------------------------
 module.exports = {
 
     //------------------------------------------------------------------------------
-    // check if namespace is in array 
+    // return parsed EU data
     //------------------------------------------------------------------------------
-    logMsg: function(msg) {
-        
-        let output = new Date().toLocaleString() + ' :: ' + msg;
-        // write to console
-        console.log(output);
-    },
+    getData: function() {
+      return euData;
+  }
 
-    standardDeviation: function(data) {
-        return standardDev(data);
-    },
-
-    milliTS: function(data) {
-        return milliTS(data);
-    } 
     
 //end of exports 
 };

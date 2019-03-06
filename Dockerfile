@@ -4,6 +4,8 @@ CMD mkdir /collector
 WORKDIR /collector
 
 COPY server.js .
+COPY teams.json .
+COPY config.json .
 COPY LICENSE .
 COPY package.json .
 COPY package-lock.json .
@@ -11,8 +13,9 @@ COPY README.md .
 COPY LICENSE .
 COPY lib ./lib
 COPY public ./public
-COPY solution01.html .
-COPY solution02.html .
+COPY language ./language
+COPY mdimages ./mdimages
+COPY insight ./insight
 
 RUN npm install
 

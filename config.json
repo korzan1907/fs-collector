@@ -1,0 +1,13 @@
+{
+    "softwareVersion": "1.1.9",
+
+    "instructorLocal": "http://localhost:4200",
+
+    "instructorCloud": "http://dashboard.default",
+
+    "languagexx" : "french",
+    "language01" : "spanish",
+    "language02" : "german",
+    "language" : "english"
+    
+}
