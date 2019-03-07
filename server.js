@@ -303,7 +303,7 @@ io.on('connection', (client) => {
     // provide the software version and role that is currently being used
     client.on('getVersion', function(data) {
         utl.logMsg('cllrM200 - Get software version request being sent.');
-        let result = {'version': cllr.softwareVersion, 'role': role, 'ns': cllr.app_namespace, 'enablePrint': cllr.enableUIPrint};
+        let result = {'version': cllr.softwareVersion, 'role': role, 'ns': cllr.app_namespace, 'enablePrint': cllr.enablePrint};
         if (typeof cllr.teams !== 'undefined') {
             result.teams = cllr.teams;
         }
