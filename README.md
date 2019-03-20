@@ -3,13 +3,14 @@
 
 Collector is an application developed to assist with enablement and training.  One or more courses can be taught or presented via the user interface. The user interface is browser based and provides two personas, instructor and student.  A series of tabs categorize the actions the user is able to perform.  The student and instructor personas are provided with a core set of common capabilties.  While the instructor persona is provided with additional capabilties that assist with course creation, validation, printing, and usage insights of student interaction. 
 
---
+----
+
 ### Student and Instuctor tabs and menus
 
 The following section provides brief descriptions an images of the student and instructor tabs and menu options.  
 
---
-##### Student tabs
+
+#### Student tabs
 
 The student is provided with the following tabs:
 
@@ -20,9 +21,9 @@ The student is provided with the following tabs:
 5. __Feedback__ - Provides the ability to submit feedback.  
 
 ![](mdimages/tabs_student.png)
---
 
-##### Student menu
+
+#### Student menu
 
 
 The instructor is provided with the following additional menu options:
@@ -35,14 +36,14 @@ The instructor is provided with the following additional menu options:
 ![](mdimages/menu_student.png)
 --
 
-##### Instructor tabs
+#### Instructor tabs
 
 The instructor is provided with the same tabs as the student plus the __Insights__ tab.  This tab provides a graphical view of the student interactions with each course.
 
 ![](mdimages/tabs_instructor.png)
 --
 
-##### Instructor menu
+#### Instructor menu
 
 The instructor is provided with the same menu options as the student plus the following additional options:
 
@@ -104,6 +105,9 @@ The statistics tab will display the progress of the course work.  The number of 
 > Refer to the Auto complete section of the documentation for details on how to use this feature.
 
 
+<br><br>
+
+----
 ## Course authoring
 
 
@@ -226,17 +230,31 @@ The second example is defined with auto completion and Button 3 delay of 30 seco
 
 ```
 
+<br><br>
+
 ----
+## Configuration
+
+
+
+
+
+
+
+
+
+
 
 
 <br><br>
 
-## Maintainer
+----
+### Maintainer
 
 IBM ICP CoC
 <br>
 
-## License
+### License
 
 
 Copyright &#x00A9; 2019 IBM®
