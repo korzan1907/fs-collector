@@ -6,7 +6,7 @@ Collector is an application developed to assist with enablement and training.  O
 --
 ### Student and Instuctor tabs and menus
 
-The following section provides brief descriptions an images of the instructor and student tabs and menus options.  
+The following section provides brief descriptions an images of the student and instructor tabs and menu options.  
 
 --
 ##### Student tabs
@@ -55,45 +55,53 @@ The instructor is provided with the same menu options as the student plus the fo
 ![](mdimages/menu_instructor.png)
 
 
+----
+
+### User interface tabs
+
+#### Courses tab
+
+The initial screen once started will display the __Courses__ tab.  From this tab select the drop down that contains the list of available courses.  
+
+![](mdimages/course_list.png)
+
+> Refer the the __Configuration__ section of this documentation for information on making courses available in this drop down menu.
+
+<br>
+
+Once a course is selected, if defined, a brief description of the course is shown below the drop down list.  This description will contain the content as defined by the course author. To start the course press the _Begin Course_ button .  
+
+Example of selected course with description shown. 
+
+![](mdimages/course_begin.png)
+
+> Refer the the __Course authoring__ section of this documentation for detailed information on creating courses.
 
 
-#### Problem Determination and Troubleshooting
+Once the course has been started the __Class work__ tab will be shown.  This tab will also have adrop down menu of the available work to be performed for this course.  This drop down is dynamic and will change based on the course selected.  The content for the work items are defined by the course author.  
 
-The session is part of the larger IBM® Cloud Fast Start 2.0 at locations in North America, Europe, and Asia Pacific.
+#### Class work tab - course work UI
 
-Each team is assigned a color. This color is also used for K8s namespace when needed.
-The dashboard uses the color assigned each team to track lab progress.  The use of the colors should make it very easy for teams to track their progress.  
+The course author defines what content will be shown.  As each work item is selected the UI will change based on the course content.  These changes includes the number of sections, number of buttons, an if a _Complete_ button is defined.  When a number and/or capital letter is referenced in the following documentation refer to the matching _red_ numnber or letter in the image below.
 
-> The interface will dynamically add the team/namespace/color row once the first lab is completed.  After the first lab is completed each green checkmark will be added as the appropriate labs is completed.
- 
-There is also count down timer that show displays the remaining time left for the labs.
+* When the work item is selected, number 1, the pale blue section, letter A, will be shown.  This base section is required and will always be shown when a work item is selected. 
 
+* Buttons number 2 and 3 and setions B and C are optional.
 
-![](mdimages/home001.png)
+* When button number 2 is defined and it is pressed the pale green section, letter B, will be shown.
 
-#### Set and start timer
+* When button number 3 is defined and it is pressed the pale orange section, letter C, will be shown.
 
-The time is set by selecting the navigation button (box with three bars) in the uppper left of the screen.  Select option <b>Start Timer</b> to begin.
-
-![](mdimages/slideout01.png)
+* Letter D, the complete button, is optional and can be defined to display in one or more of the lettered sections.  If defined, when pressed this button records the completion of the work item.  The completion information is tracked on the __Statistics__ tab.
 
 
-Once selected a modal screen is presented.  Enter the number of minutes for the timer to run and press the <b>Start timer</b> button.
+![](mdimages/course_work_ui.png)
 
-![](images/timer.png)
+#### Statistics tab
 
-When the timer has completed a Stop message will be displayed.
+The statistics tab will display the progress of the course work.  The number of _red circle_ and _green checkmarks_ is dynamic.  The number of red circle is defined by the course author when creating the course content.  The number of _green checkmarks_ shown is controlled by the number of completed work items.  Completed work items can be created by defining the _complete_ button or by using the auto complete feature.  
 
-![](images/stop.png)
-
-#### Clear stats
-
-Clear the timer by selecting the navigation button (box with three bars) in the uppper left of the screen.  Select option <b>Clear stats</b> to begin.
-
-Once selected a modal screen is presented.  Press the <b>Delete stats</b> button to clear the stats.
-
-![](images/clear.png)
-
+> Refer to the Auto complete section of the documentation for details on how to use this feature.
 
 <br><br>
 
