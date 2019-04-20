@@ -8,8 +8,6 @@ pids
 *.pid
 *.seed
 
-# course markdown images
-mdimages/*
 
 # course markdown and images
 public/coursecatalog/*
