@@ -72,6 +72,8 @@
                 <a href="javascript:about()" style="font-family: Arial, Arial, sans-serif;"><span id="menu00"></span></a>
                 <a href="javascript:setTimer()" style="font-family: Arial, sans-serif;"><span id="menu01"></span></a>
                 <a href="javascript:clearTimer()" style="font-family: Arial, sans-serif;"><span id="menu02"></span></a>
+                <a href="javascript:updateCoursesModal()" style="font-family: Arial, sans-serif;"><span id="menu08"></span></a>
+                <a href="javascript:languageModal()" style="font-family: Arial, sans-serif;"><span id="menu11"></span></a>
                 <!--
                 <a href="javascript:clearStats()" style="font-family: Arial, sans-serif;"><span id="menu03"></span></a>
                 -->
@@ -79,6 +81,8 @@
                 <div id="author">
                     <a href="javascript:fileUpload()" style="font-family: Arial, sans-serif;"><span id="menu04"></span></a>
                     <a href="javascript:validateCourses()" style="font-family: Arial, sans-serif;"><span id="menu05"></span></a>
+                    <a href="javascript:publishCourses()" style="font-family: Arial, sans-serif;"><span id="menu09"></span></a>
+                    <a href="javascript:deleteCourseModal()" style="font-family: Arial, sans-serif;"><span id="menu10"></span></a>
                     <a href="javascript:teamModal()" style="font-family: Arial, sans-serif;"><span id="menu07"></span></a>
                 </div>
                 <div id="coursePrint">
@@ -346,7 +350,123 @@
                         </div>
                     </div>
                 </div>
-            </div>            
+            </div>
+
+            <!-- ==================================== -->
+            <!-- Update courses Modal section         -->   
+            <!-- ==================================== -->
+            <div class="modal fade" id="updateCoursesModal" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <div id="updateHeader">
+                                <h4 class="modal-title">
+                                    <span style="font-family: Arial, sans-serif;">
+                                    <span id="modal_updateC_hdr1"></span>
+                                    </span>
+                                </h4>
+                            </div>
+                        </div>
+                        <div class="modal-body">
+                            <div class="col-sm-12" style="padding-top: 20px;">
+                                <div>
+                                    <span id="modal_updateC_desc"></span>
+                                </div>
+                            </div>
+                            <div class="col-sm-3" style="padding-top: 20px;">
+                                <button type="button" class="btn btn-outline-primary" onclick="updateCourses()" style="margin: 5px;">
+                                &nbsp;&nbsp;&nbsp;<span id="modal_updateC_btn1"></span>&nbsp;&nbsp;&nbsp;
+                                </button>
+                            </div>
+                            <div id="updateCResult" style="margin-top: 20px;">
+                                <!-- Delete status message here -->
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-dismiss="modal"><span id="modal_updateC_btn2"></span></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ==================================== -->
+            <!-- Delete course Modal section           -->   
+            <!-- ==================================== -->
+            <div class="modal fade" id="deleteCourseModal" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <div id="deleteHeader">
+                                <h4 class="modal-title">
+                                    <span style="font-family: Arial, sans-serif;">
+                                    <span id="modal_delete_hdr1"></span>
+                                    </span>
+                                </h4>
+                            </div>
+                        </div>
+                        <div class="modal-body">
+                            <div class="col-sm-6" style="padding-top: 20px;">
+                                <div class="form-group">
+                                    <select class="form-control" id="deleteList">
+                                        <option>1</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-3" style="padding-top: 20px;">
+                                <button type="button" class="btn btn-outline-primary" onclick="deleteCourse()" style="margin: 5px;">
+                                &nbsp;&nbsp;&nbsp;<span id="modal_delete_btn1"></span>&nbsp;&nbsp;&nbsp;
+                                </button>
+                            </div>
+                            <div id="deleteResult" style="margin-top: 20px;">
+                                <!-- Delete status message here -->>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-dismiss="modal"><span id="modal_delete_btn2"></span></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ==================================== -->
+            <!-- Language Modal section               -->   
+            <!-- ==================================== -->
+            <div class="modal fade" id="languageModal" tabindex="-1" role="dialog">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <div id="deleteHeader">
+                                    <h4 class="modal-title">
+                                        <span style="font-family: Arial, sans-serif;">
+                                        <span id="modal_lang_hdr1"></span>
+                                        </span>
+                                    </h4>
+                                </div>
+                            </div>
+                            <div class="modal-body">
+                                <div class="col-sm-6" style="padding-top: 20px;">
+                                    <div class="form-group">
+                                        <select class="form-control" id="langList">
+                                            <option>1</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3" style="padding-top: 20px;">
+                                    <button type="button" class="btn btn-outline-primary" onclick="updateLanguage()" style="margin: 5px;">
+                                    &nbsp;&nbsp;&nbsp;<span id="modal_lang_btn1"></span>&nbsp;&nbsp;&nbsp;
+                                    </button>
+                                </div>
+                                <div id="langResult" style="margin-top: 20px;">
+                                    <!-- Language status message here -->
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" data-dismiss="modal"><span id="modal_lang_btn2"></span></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    
             <!-- ==================================== -->
             <!-- Print course Modal section           -->   
             <!-- ==================================== -->
@@ -386,6 +506,57 @@
                     </div>
                 </div>
             </div>
+
+    
+            <!-- ==================================== -->
+            <!-- Publish course Modal section         -->   
+            <!-- ==================================== -->
+            <div class="modal fade" id="publishModal" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <div id="publishHeader">
+                                <h4 class="modal-title">
+                                    <span style="font-family: Arial, sans-serif;">
+                                    <span id="modal_publish_hdr1"></span>
+                                    </span>
+                                </h4>
+                            </div>
+                        </div>
+                        <div class="modal-body">
+                            <div class="col-sm-6" style="padding-top: 20px;">
+                                <div id="pubinfo">
+                                    <table class="table table-condensed table-sm">
+                                        <thead>
+                                            <tr style="text-align: center;">
+                                                <th><span>&nbsp;</span></th>
+                                                <th><span id="modal_publish_th2"></span></th>
+                                                <th><span id="modal_publish_th3"></span></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="pubTable">
+                                            <tr style="text-align: left; background-color: white;">
+                                                <td>
+                                                    <button type="button" class="btn-sm btn-outline-primary" onclick="publish('')" >
+                                                        <span id="modal_publish_btn2"></span>
+                                                    </button>
+                                                </td>
+                                                <td style="margin-left: 5px; text-align: center;" id="pubrow-01">Published</td>
+                                                <td style="margin-left: 5px;">FS01 - Something</td>
+                                            </tr>
+                                            <!-- No body to display -->
+                                        </tbody>
+                                    </table>
+                                </div>                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-dismiss="modal"><span id="modal_publish_btn1"></span></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- ==================================== -->
             <!-- Timer Modal section                  -->   
             <!-- ==================================== -->
@@ -423,6 +594,7 @@
                     </div>
                 </div>
             </div>
+
             <!-- ==================================== -->
             <!-- File upload Modal section            -->
             <!-- ==================================== -->
@@ -453,8 +625,9 @@
                     </div>
                 </div>
             </div>
+
             <!-- ==================================== -->
-            <!-- validation Modal section             -->
+            <!-- Validation Modal section             -->
             <!-- ==================================== -->
             <div class="modal fade" id="validateModal" tabindex="-1" role="dialog" >
                 <div class="modal-dialog modal-lg" role="document">
@@ -478,6 +651,7 @@
                     </div>
                 </div>
             </div>
+
             <!-- ==================================== -->
             <!-- About Modal section                  -->
             <!-- ==================================== -->

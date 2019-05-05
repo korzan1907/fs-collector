@@ -43,24 +43,6 @@ const courses = require('./lib/courses');
 const printC = require('./lib/printCourse');
 const insight = require('./lib/insight');
 
-// check for config.json file to get parameters
-readConfig();
-
-// set destination and storage for the drag-n-drop of courses
-const dest = process.cwd() + cllr.courseDirectory;
-let storage = multer.diskStorage({
-    destination: function(req, file, cb) {
-        cb(null, dest)
-    },
-    filename: function(req, file, cb) {
-        cb(null, file.originalname)
-        let ext = path.extname(file.originalname).toUpperCase();
-        if (ext !== '.MD') {
-            console.log('NOT A COURSE FILE')
-        }
-    }
-});
-
 
 //------------------------------------------------------------------------------
 // Application variables
@@ -141,6 +123,24 @@ if (typeof options.role !== 'undefined' && options.role !== null) {
 }
 
 
+// check for config.json file to get parameters
+readConfig(role);
+
+// set destination and storage for the drag-n-drop of courses
+const dest = process.cwd() + cllr.courseDirectory;
+let storage = multer.diskStorage({
+    destination: function(req, file, cb) {
+        cb(null, dest)
+    },
+    filename: function(req, file, cb) {
+        cb(null, file.originalname)
+        let ext = path.extname(file.originalname).toUpperCase();
+        if (ext !== '.MD') {
+            console.log('NOT A COURSE FILE')
+        }
+    }
+});
+
 //------------------------------------------------------------------------------
 // get environment variable
 //------------------------------------------------------------------------------
@@ -153,6 +153,8 @@ if (typeof localVars.INSTRUCTOR !== 'undefined') {
     role = 'I'
     utl.logMsg('cllrM030 - Role enabled as instructor.');
 } 
+
+
 
 // namespace - 
 if (typeof localVars.APP_NAMESPACE !== 'undefined') {
@@ -200,6 +202,15 @@ app.get('/dumpcore',function(req,res){
     utl.logMsg('cllrM110 - GET dumpcore event received');
     //console.log(JSON.stringify(cllr,null,2));
 });
+
+app.get('/courses',function(req,res){
+	let rtn = {'courses': cllr.courses, 'labels': cllr.labels, 'courseConfig': cllr.courseConfig, 'courseIds': cllr.courseIds}
+    res.json(rtn);
+    //res.end(JSON.stringify(cllr,null,2));
+    utl.logMsg('cllrM110 - GET dumpcore event received');
+    //console.log(JSON.stringify(cllr,null,2));
+});
+
 
 app.get('/ping', function(req, res) {
     res.writeHead(200, {
@@ -303,7 +314,7 @@ io.on('connection', (client) => {
     // provide the software version and role that is currently being used
     client.on('getVersion', function(data) {
         utl.logMsg('cllrM200 - Get software version request being sent.');
-        let result = {'version': cllr.softwareVersion, 'role': role, 'ns': cllr.app_namespace, 'enablePrint': cllr.enablePrint};
+        let result = {'version': cllr.softwareVersion, 'role': role, 'ns': cllr.app_namespace, 'enablePrint': cllr.enablePrint, 'publish': cllr.coursePublished};
         if (typeof cllr.teams !== 'undefined') {
             result.teams = cllr.teams;
         }
@@ -321,12 +332,28 @@ io.on('connection', (client) => {
         cllr.namespacekey = '';
    });
 
-    // get data for drop downs in UI, this includes the courses
+   // get data for drop downs in UI, this includes the courses
     client.on('getDropDowns', function(data) {
         utl.logMsg('cllrM220 - Get drop-down lists request received');
         // return the comma seperated string of drop-down lists
-        let result = {'courseIds': cllr.courseIds, 'courseConfig': cllr.courseConfig, 'labels': cllr.labels, 'printFiles': cllr.printFileNames}
+        let result = {'courseIds': cllr.courseIds, 'courseConfig': cllr.courseConfig, 'labels': cllr.labels, 'printFiles': cllr.printFileNames, 'publish': cllr.coursePublished}
         client.emit('getDropDownsResults', result);
+    });
+
+    // get courses
+    client.on('updateCourses', function() {
+        utl.logMsg('cllrM210 - Update courses request received.');
+        let rtn = '';
+        student.getCourseData()
+        .then(function(result) {
+            rtn = {'status': result, 'courseIds': cllr.courseIds, 'courseConfig': cllr.courseConfig, 'labels': cllr.labels, 'printFiles': cllr.printFileNames, 'publish': cllr.coursePublished}
+            client.emit('updateCoursesResult', rtn);
+        })
+        .catch(function(err) {
+            utl.logMsg('cllrM212 - Error Processing error, message: ' + err, 'icp');
+            rtn = {'status': err}
+            client.emit('updateCoursesResult', rtn);
+        });
     });
 
     // run the render and validation process for all courses in the the course directory
@@ -339,7 +366,22 @@ io.on('connection', (client) => {
             for (let v = 0; v < cid.length; v++) {
                 result = result + '\n' + cllr.courseConfig[cid[v]].pMsg + '-----------------';
             }
-            client.emit('validateCoursesResult', {'info': result});
+            if (data !== 'refresh') {
+                client.emit('validateCoursesResult', {'info': result});
+            } else {
+
+                let keys = Object.keys(cllr.courseConfig);
+                let key = ''
+                let status = '';
+                for (let k = 0; k < keys.length; k++) {
+                    key = keys[k];
+                    status = cllr.coursePublished[key].published
+                    cllr.courseConfig[key].published = status;
+                }
+
+                let result = {'courseIds': cllr.courseIds, 'courseConfig': cllr.courseConfig, 'labels': cllr.labels, 'printFiles': cllr.printFileNames, 'publish': cllr.coursePublished}
+                client.emit('refreshResults', result);
+            }
         }, 2000);
      });
 
@@ -394,6 +436,32 @@ io.on('connection', (client) => {
         client.emit('getInfoResults', result);
     });
 
+
+    // ---------------- set display language request ----------------
+    // store UI submitted feedback
+    client.on('setLanguage', function(data) {
+        let lang = data.split('::');
+        let result = {};
+        utl.logMsg('cllrM263 - Set language request received for: ' + lang[1]);
+        runtimeConfig.setLanguage(lang[1]);
+        if (typeof cllr.uiLabels !== 'undefined') {
+            result.uiLabels = cllr.uiLabels;
+        }
+        result.status = 'PASS';
+        client.emit('setLanguageResults', result);
+    });
+
+    // ---------------- publish course request ----------------
+    // store UI submitted feedback
+    client.on('publishCourse', function(data) {
+        let key = data.key;
+        let status = data.status;
+        utl.logMsg('cllrM265 - Publish course data request received');
+        cllr.courseConfig[key].published = status;
+        cllr.coursePublished[key].published = status;
+    });
+
+
     // ---------------- chart related requests ----------------
     // store UI submitted feedback
     client.on('insight', function() {
@@ -413,6 +481,16 @@ io.on('connection', (client) => {
         client.emit('teamColorResults', result);
     });
 
+
+    // ---------------- delete course requests ----------------
+    // retireve course info
+    client.on('deleteCourse', function(data) {
+        utl.logMsg('cllrM277 - Delete course request received');
+        console.log(JSON.stringify(data,null, 2));
+        let status = courses.deleteCourse(data);
+        let result = {'msg': status}
+        client.emit('deleteCourseResults', result);
+    });
 
 
     // ---------------- print related requests ----------------    
@@ -484,8 +562,8 @@ function splash() {
     console.log(adv);
 }
 
-function readConfig() {
-    runtimeConfig.readConfig();
+function readConfig(role) {
+    runtimeConfig.readConfig(role);
 }
 
 
@@ -578,17 +656,6 @@ function blbData() {
     return data;
 }
 
-
-//------------------------------------------------------------------------------
-// validate the course directory
-//------------------------------------------------------------------------------
-courses.validate('Start');
-
-//------------------------------------------------------------------------------
-// begin processing for web and REST endpoints
-//------------------------------------------------------------------------------
-startAll();
-
 //------------------------------------------------------------------------------
 // Print and save environment variables
 //------------------------------------------------------------------------------
@@ -602,5 +669,26 @@ if (role === 'S') {
     auditSender = setInterval(student.sendAuditLog, 60000);
     utl.logMsg('cllrM910 - Send audit log to instructor has been enabled');
 }
+
+//------------------------------------------------------------------------------
+// validate the course directory if Instructor role otherwise
+// as student ask instructor for classes and setup for local student
+//------------------------------------------------------------------------------
+if (role === 'I' ) {
+    courses.validate('Start');
+    startAll();
+} else {
+    // need from instructor:  
+    //   cllr.labels 
+    //   cllr.courseIds 
+    //   cllr.courseConfig
+    //   cllr.courses
+    startAll();
+    student.getCourseData();
+}
+
+//------------------------------------------------------------------------------
+// begin processing for web and REST endpoints
+//------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------

@@ -35,7 +35,8 @@ var topicList = '';
 var currentTopic = '';
 var currentCourse = '';
 var courseConfig = '';
-var currentConfig = ''
+var currentConfig = '';
+var courseKeys;
 var bt3;
 var bt2;
 // team names, color, and text color
@@ -155,10 +156,12 @@ $(document).ready(function() {
     })
 });
 
-// dynamically add the canvas element definitions for each course
+// dynamically add the canvas element definitions for each course on the insight tab
 function addCanvasDefs(cnt) {
 	let cCnt = 0;
 	let rtn = '';
+	// increment cnt 
+	cnt = cnt + 1;
 	$("#graphs").html('');
 	for (var c = 1; c < cnt; c++) {
 		cCnt++;
@@ -196,6 +199,10 @@ function setLabels() {
 	$("#menu05").html(uiLabels.menu05);
 	$("#menu06").html(uiLabels.menu06);
 	$("#menu07").html(uiLabels.menu07);
+	$("#menu08").html(uiLabels.menu08);
+	$("#menu09").html(uiLabels.menu09);
+	$("#menu10").html(uiLabels.menu10);
+	$("#menu11").html(uiLabels.menu11);
 
 	// tab labels
 	$("#tab00").html(uiLabels.tab00);
@@ -259,6 +266,33 @@ function setLabels() {
 	$("#modal_print_btn2").html(uiLabels.modal_print_btn2);
 	$("#modal_print_preview").html(uiLabels.modal_print_preview);
 	$("#modal_print_fail").html(uiLabels.modal_print_fail);
+
+	$("#modal_delete_hdr1").html(uiLabels.modal_delete_hdr1);
+	$("#modal_delete_btn1").html(uiLabels.modal_delete_btn1);
+	$("#modal_delete_btn2").html(uiLabels.modal_delete_btn2);
+	$("#modal_delete_pass").html(uiLabels.modal_delete_pass);
+	$("#modal_delete_fail").html(uiLabels.modal_delete_fail);
+
+	$("#modal_publish_hdr1").html(uiLabels.modal_publish_hdr1);
+	$("#modal_publish_pub").html(uiLabels.modal_publish_pub);
+	$("#modal_publish_unp").html(uiLabels.modal_publish_unp);
+	$("#modal_publish_btn1").html(uiLabels.modal_publish_btn1);
+	$("#modal_publish_btn2").html(uiLabels.modal_publish_btn2);
+	$("#modal_publish_th1").html(uiLabels.modal_publish_th1);
+	$("#modal_publish_th2").html(uiLabels.modal_publish_th2);
+	$("#modal_publish_th3").html(uiLabels.modal_publish_th3);
+
+	$("#modal_updateC_hdr1").html(uiLabels.modal_updateC_hdr1);
+	$("#modal_updateC_desc").html(uiLabels.modal_updateC_desc);
+	$("#modal_updateC_btn1").html(uiLabels.modal_updateC_btn1);
+	$("#modal_updateC_btn2").html(uiLabels.modal_updateC_btn2);
+	$("#modal_updateC_pass").html(uiLabels.modal_updateC_pass);
+	$("#modal_updateC_fail").html(uiLabels.modal_updateC_fail);
+
+	$("#modal_lang_hdr1").html(uiLabels.modal_lang_hdr1);
+	$("#modal_lang_btn1").html(uiLabels.modal_lang_btn1);
+	$("#modal_lang_btn2").html(uiLabels.modal_lang_btn2);
+
 }
 
 
@@ -344,14 +378,74 @@ socket.on('getInfoResults', function(info) {
 });
 
 socket.on('getDropDownsResults', function(data) {
-	// save data from server
-	topicList = data.labels;
-	courseConfig = data.courseConfig;
-	populateCourseCatalogList(data.courseIds);
-	if (courseCount > 0) {
-		addCanvasDefs(courseCount);    // need to set this number dynamically based on number of courses 
+	dropDowns(data);
+});
+
+socket.on('updateCoursesResult', function(data) {
+	let resp = '';
+	if (data.status === 'PASS') {
+		dropDowns(data);
+		resp = uiLabels.modal_updateC_pass
+	} else {
+		let msg = '';
+		if (typeof data.status.errno !== 'undefined') {
+			msg = ': ' + data.status.errno;
+		}
+		resp = uiLabels.modal_updateC_fail + msg
 	}
-	populatePrintList(courseConfig);
+
+	$("#updateCResult").empty();
+	$("#updateCResult").html('');
+	$("#updateCResult").html(resp);
+});
+
+socket.on('refreshResults', function(data) {
+	dropDowns(data);
+	let resp = uiLabels.modal_delete_pass
+	$("#deleteResult").empty();
+	$("#deleteResult").html('');
+	$("#deleteResult").html(resp);
+});
+
+socket.on('deleteCourseResults', function(data) {
+	// save data from server
+	let resp = 'Unknown';
+	if (data.msg === 'PASS') {
+		// update the course data from the server
+		socket.emit('validateCourses', 'refresh');
+	} else {
+		resp = uiLabels.modal_delete_fail
+		$("#deleteResult").empty();
+		$("#deleteResult").html('');
+		$("#deleteResult").html(resp);
+	}
+});
+
+socket.on('setLanguageResults', function(data) {
+
+	// set the labels
+	if (typeof data.uiLabels !== 'undefined') {
+		uiLabels = data.uiLabels;
+	}
+	$("#ctitle").html(uiLabels.collectorName + ' - ' + app_namespace);
+	setLabels();
+	populateLanguageList();
+	let resp = 'Unknown';
+	if (data.status === 'PASS') {
+		resp = uiLabels.modal_lang_pass
+	} else {
+		resp = uiLabels.modal_lang_fail
+	}
+	$("#langResult").empty();
+	$("#langResult").html('');
+	$("#langResult").html(resp);
+});
+
+
+socket.on('feedbackResults', function(data) {
+	$("#feedStatus").empty();
+	$("#feedStatus").html('');
+	$("#feedStatus").html('<br><br><p>' + data.status + '</p>');
 });
 
 socket.on('feedbackResults', function(data) {
@@ -361,7 +455,7 @@ socket.on('feedbackResults', function(data) {
 });
 
 socket.on('teamColorResults', function(data) {
-	var rtn = '<table class="table table-bordered"><thead><tr>' +
+	let rtn = '<table class="table table-bordered"><thead><tr>' +
 		'<th style="padding: 4px; width: 33%;">' + uiLabels.modal_team_lbl + '</th>' +
 		'<th style="padding: 4px; width: 33%;">' + uiLabels.modal_team_lbl + '</th>' +
 		'<th style="padding: 4px; width: 33%;">' + uiLabels.modal_team_lbl + '</th>' +
@@ -434,9 +528,32 @@ socket.on('insightResults', function(data) {
 //----------------------------------------------------------
 // socket io definitions for out-bound
 //----------------------------------------------------------
+
+function dropDowns(data) {
+	topicList = data.labels;
+	courseConfig = data.courseConfig;
+	courseKeys = data.courseIds;
+	populateCourseCatalogList(data.courseIds);
+	if (courseCount > 0) {
+		addCanvasDefs(courseCount);    // need to set this number dynamically based on number of courses 
+	}
+	populatePrintList(courseConfig);
+	populateDeleteList(courseConfig);
+	populateLanguageList();
+}
+ 
+
+
+
+
 // send request to server to get drop down list data
 function getSelectLists() {
     socket.emit('getDropDowns');
+}
+
+// send request to server to get drop down list data for course delete
+function getDeleteList() {
+    socket.emit('getDeleteList');
 }
 
 // send request to server to get software version
@@ -538,11 +655,122 @@ function validateCourses() {
     socket.emit('validateCourses');
 }
 
+// update available courses
+function updateCourses() {
+	var resp = '<br><div><img style="float: left; vertical-align: middle; margin-bottom: 0.75em;" src="images/loading.gif" height="40" width="40">' +
+	'&nbsp;&nbsp;&nbsp;&nbsp;<span style="vertical-align: middle;"></span></div>';
+	$("#updateCResult").html(resp);
+
+    socket.emit('updateCourses');
+}
+
+// validate course
+function updateCoursesModal() {
+	closeNav();
+	$("#updateCoursesModal").modal();
+
+}
+
+// update dispaly language
+function updateLanguage() {
+	$("#langResult").empty();
+	$("#langResult").html('');
+	var lang = $("#langList option:selected").val();
+    socket.emit('setLanguage', lang);
+	var resp = '<br><div><img style="float: left; vertical-align: middle; margin-bottom: 0.75em;" src="images/loading.gif" height="40" width="40">' +
+	'&nbsp;&nbsp;&nbsp;&nbsp;<span style="vertical-align: middle;"></span></div>';
+	$("#langResult").html(resp);
+	populateLanguageList();
+}
+
+// validate course
+function languageModal() {
+	closeNav();
+	$("#languageModal").modal();
+
+}
+
+
 //----------------------------------------------------------
 // screen handlers
 //----------------------------------------------------------
 
-// show the ssplash screen
+// delete a course modal
+function deleteCourseModal() {
+	$("#deleteResult").empty();
+	$("#deleteResult").html('');
+    $("#deleteCourseModal").modal();
+}
+
+// delete a course process
+function deleteCourse() {
+	$("#deleteResult").empty();
+	$("#deleteResult").html('');
+	var pFile = $("#deleteList option:selected").val();
+	socket.emit('deleteCourse', pFile);
+	var resp = '<br><div><img style="float: left; vertical-align: middle; margin-bottom: 0.75em;" src="images/loading.gif" height="40" width="40">' +
+	'&nbsp;&nbsp;&nbsp;&nbsp;<span style="vertical-align: middle;"></span></div>';
+	$("#deleteResult").html(resp);
+}
+
+// publish courses
+function publishCourses() {
+	buildPublishTable();
+    closeNav();
+    $("#publishModal").modal();
+}
+
+function buildPublishTable() {
+    $("#pubTable").empty();
+    $("#pubTable").html('');
+	
+	let html = '';
+	let row = ''
+	let pub = '';
+	let keys = courseKeys.split(',');
+	let key = '';
+	for (let p = 0; p < courseKeys.length; p++) {
+		
+		row = '';
+		key = keys[p];
+
+		if (typeof courseConfig[key] !== 'undefined') {
+			if (courseConfig[key].published === true) {
+				pub = uiLabels.modal_publish_pub
+			} else {
+				pub = uiLabels.modal_publish_unp
+			}
+			row = row + '<tr style="text-align: left; background-color: white;">' +
+				'<td> <button type="button" class="btn-sm btn-outline-primary" onclick="publishToggle(\'' + key  + '\')" >' +
+				uiLabels.modal_publish_btn2 + '</button></td>' +
+				'<td style="margin-left: 5px; text-align: center;" id="pubrow-' + p + '">' + pub + '</td>' +
+				'<td style="margin-left: 5px;">' +  courseConfig[key].c_title   + '</td> </tr>';
+
+			html = html + row;
+		}
+	}
+	$("#pubTable").html(html);	
+}
+
+function publishToggle(key) {
+	let status = courseConfig[key].published;
+	let rtn;
+	if (status === true) {
+		courseConfig[key].published = false;
+		rtn = false;
+	} else {
+		courseConfig[key].published = true;
+		rtn = true;
+	}
+	let data = {'key': key, 'status': rtn}
+	socket.emit('publishCourse', data);
+	buildPublishTable();
+	socket.emit('validateCourses', 'refresh');
+	//populateCourseCatalogList(courseIds);
+}
+
+
+// show the splash screen
 function showSplash() {
     closeNav();
 	$("#splash").show();
@@ -920,9 +1148,6 @@ function buildTblStats(data, max) {
 				+ tColor + '; font-size: 100%; font-family: Arial Rounded MT Bold, Helvetica Rounded, Arial, sans-serif;">' 
 				+ i + '</td></tr>'
 			} 
-
-
-
 		} 
 	}
 	rtn = rtn + '</tbody></table>'
@@ -1001,6 +1226,9 @@ function populateCourseCatalogList(courses) {
 	var items = [];
 	var options = courses.split(',');
 	
+	// reset course count
+	courseCount = 0;
+
 	items.push('&nbsp;' + uiLabels.tab00_list);
 	// load array to sort
 	for (var j = 0; j < options.length; j++) {
@@ -1018,14 +1246,77 @@ function populateCourseCatalogList(courses) {
 		} else {
 			ov = '&nbsp;' + uiLabels.tab00_list;
 		}
-        //listitems += '<option value="' + items[i] + '">' + items[i] + '</option>';
-        listitems += '<option value="' + items[i] + '">' + ov + '</option>';
-		// set the number of courses found so the canvas array can match the number of courses
-		courseCount = i + 1;
+		if (typeof courseConfig[key] !== 'undefined') {
+			if (courseConfig[key].published === true) {
+				//listitems += '<option value="' + items[i] + '">' + items[i] + '</option>';
+				listitems += '<option value="' + items[i] + '">' + ov + '</option>';
+				// set the number of courses found so the canvas array can match the number of courses
+				courseCount = courseCount + 1;
+				
+			}
+		}
 	}
     $("#courseList").html(listitems);
 }
 
+//----------------------------------------------------------
+// populate the language list
+//----------------------------------------------------------
+function populateLanguageList() {
+    $("#langList").empty();
+	$("#langList").html('');
+	var langs = uiLabels.modal_lang_pick.split(',');
+	var items = [];
+	items.push('&nbsp;' + uiLabels.modal_lang_list + '::_blank');
+	if (typeof langs[0] !== 'undefined') {
+		items.push(langs[0].trim() + '::english');
+	}
+	if (typeof langs[1] !== 'undefined') {
+		items.push(langs[1].trim() + '::french');
+	}
+	if (typeof langs[2] !== 'undefined') {
+		items.push(langs[2].trim() + '::german');
+	}
+	if (typeof langs[3] !== 'undefined') {
+		items.push(langs[3].trim() + '::spanish');
+	}
+
+	// sort course names
+	items.sort();
+	var listitems = '';
+	var entry;
+
+	// build options for html
+	for (var i = 0; i < items.length; i++) {
+		entry = items[i].split('::');
+        listitems += '<option value="' + items[i] + '">' + entry[0] + '</option>';
+	}
+    $("#langList").html(listitems);
+}
+
+//----------------------------------------------------------
+// populate the course delete list
+//----------------------------------------------------------
+function populateDeleteList(courses) {
+    $("#deleteList").empty();
+    $("#deleteList").html('');
+	var items = [];
+	items.push('&nbsp;' + uiLabels.modal_delete_list + '::_blank');
+	// load array to sort
+	for (course in courses) {
+		items.push(courses[course].c_title + '::'+ courses[course].filename)
+	}
+	// sort course names
+	items.sort();
+	var listitems = '';
+	var entry;
+	// build options for html
+	for (var i = 0; i < items.length; i++) {
+		entry = items[i].split('::');
+        listitems += '<option value="' + items[i] + '">' + entry[0] + '</option>';
+	}
+    $("#deleteList").html(listitems);
+}
 
 //----------------------------------------------------------
 // populate the course catalod list
