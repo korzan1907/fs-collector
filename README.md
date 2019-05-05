@@ -31,7 +31,8 @@ The instructor is provided with the following additional menu options:
 1. __About Collector__ - About information for Collector.
 2. __Start Timer__ - Set and start a timer.
 3. __Clear Timer__ - Clear and reset the timer display information.
-4. __Clear Stats__ - Reset the information that is shown on the Statistics tab.
+4. __Update course catalog__ - Update the available courses by retrieving the latest course catalog from the instructor.
+5. __Language__ - Select the user interface language.  Choices are English, French, German, and Spanish.
 
 ![](mdimages/menu_student.png)
 --
@@ -48,14 +49,187 @@ The instructor is provided with the same tabs as the student plus the __Insights
 The instructor is provided with the same menu options as the student plus the following additional options:
 
 1. __Upload course__ - Add a course to the existing course catalog instance via a drag-n-drop interface.
-2. __Validate course__ - Validate the course to help ensure it will be processed properly within the instruction process of Collector.
-3. __Print course to PDF__ - Create a PDF file of the course content.
-4. __Teams__ - View the defined team (or) students names and colors that are used when displaying statistics.
+2. __Validate courses__ - Validate the course to ensure it will be processed properly within the instruction process of Collector.
+3. __Publish courses__ - Publish course content to catalog for downloading by student.
+4. __Delete course__ - Delete a single course "md" file from coursecatalog directory.
+5. __Teams__ - View the defined team (or) students names and colors that are used when displaying statistics.
+6. __Print course to PDF__ - Create a PDF file of the course content.
 
 
 ![](mdimages/menu_instructor.png)
 
 
+----
+### Menu option displays
+
+#### About Collector
+
+The following is shown when the __About Collector__ menu item is selected.  To close the display press the 'X' in the upper right corner or click outside the display modal. 
+
+![](mdimages/menu_about.png)
+
+<br><br>
+#### Start Timer
+
+The following is shown when the __Start Timer__ menu item is selected.  To close the display press the blue close button or click outside the display modal.  To start the timer enter a numeric value for the number of minutes the timer is run. 
+
+![](mdimages/menu_start_timer.png)
+
+Once started the timer is started the display shows the hours, minutes and seconds remaining.  This is displayed in the upper region of the user interface.
+
+![](mdimages/menu_timer_running.png)
+
+When the timer has reached to end of the timed period the following is displayed:
+
+![](mdimages/menu_timer_stopped.png)
+
+
+
+<br><br>
+#### Clear Timer
+
+When the __Clear Timer__ menu item is selected the timer dispaly information is removed from the user interface.
+
+> No image to display
+
+<br><br>
+
+#### Update course catalog
+
+When the __Update course catalog__ menu item is selected the following modal is displayed.  Press the 'Close' button without pressing the update button to cancel and not update the coure catalog.  Press the 'Update' button to retrieve the latest course catalog from the instructor.  
+
+![](mdimages/menu_update_course_catalog.png)
+
+Processing messages are displayed in the modal indicating if the update was successful or failed:
+
+- Pass message:  Updated completed succcessfully
+- Fail message:  Update failed:  ECONNREFUSED. (the ECONNREFUSED portion of the message may change based on the error that has occurred.)
+
+
+
+<br><br>
+#### Language
+
+When the __Language__ menu item is selected the following modal is displayed.    
+
+![](mdimages/menu_language.png)
+
+Select the desired language from the drop down option list.  Then press the 'Select' button to set the language.
+
+![](mdimages/menu_lang_options.png)
+
+Example of the Language menu modal with French having been selected.
+
+![](mdimages/menu_lang_french.png)
+
+
+
+
+<br><br>
+#### Upload Course
+
+When the __Upload course__ menu item is selected the following modal is displayed.    
+
+![](mdimages/menu_upload_course.png)
+
+Drag one or more course files to the file drop area.  If the file successfully uploads a box with a checkmark will be displayed for a short period.  The checkmark then is removed and a box with the file size is displayed.
+
+| Description | Image |
+| :--- | :---: |
+| checkmark| ![](mdimages/menu_upload_check.png) |
+| success |  ![](mdimages/menu_upload_good.png) |
+
+
+
+
+<br><br>
+#### Validate courses
+
+When the __Validate courses__ menu item is selected the following modal is displayed.  Validation processing of the course files is run and once completed the results are displayed.   
+
+![](mdimages/menu_validate_courses.png)
+
+
+
+<br><br>
+#### Publish courses
+
+When the __Publish courses__ menu item is selected the following modal is displayed.  Publishing a course will make the course available for students.  If the course is available the 'Published' column will have the value __Yes__.  Otherwise the column will contain __No__. To change the status of the course press the 'Toggle' button on the same line as the course in the displayed table.  The 'Published' column should toggle.  
+
+![](mdimages/menu_publish_courses.png)
+
+
+The follwing displays the results when the last two courses in the table have been changed to indicate the courses are not publishted.
+
+![](mdimages/menu_unpublish.png)
+
+
+When a course is published or the status is changed this will affect the dropdown of available courses on the __Courses__ tab.  The follwing table displays the differnt results for the above examples.
+
+
+| Description | Course catalog dropdown |
+| :--- | :---: |
+| All courses published | ![](mdimages/menu_publish_list1.png) |
+| Only two courses published |  ![](mdimages/menu_publish_list2.png) |
+
+
+
+<br><br>
+#### Delete course
+
+When the __Delete course__ menu item is selected the following modal is displayed.  Course files can be deleted from the course catalog directory.  This menu option will __DELETE__ the file and does not validate the request.  Use this option with caution as the file is really deleted from the directory.  
+
+![](mdimages/menu_delete_course.png)
+
+
+Select the file to delete from the dropdown.
+
+![](mdimages/menu_delete_list.png)
+
+
+Result of the delete course processing.
+
+![](mdimages/menu_delete_good.png)
+
+
+
+
+<br><br>
+#### Teams
+
+When the __Teams__ menu item is selected the following modal is displayed.  This option will display the complete list of team names and color combinations as defined in the default configuration file __team.json__. 
+![](mdimages/menu_teams.png)
+
+
+
+
+
+<br><br>
+#### Print course to PDF
+
+When the __Print course to PDF__ menu item is selected the following modal is displayed.  This option provides the ability for the instructor to create a PDF for the selected course.   
+
+![](mdimages/menu_print.png)
+
+Select the course file from the dropdown that will have the PDF created.
+
+![](mdimages/menu_print_list.png)
+
+Process the course file and generate the PDF by pressing the 'Print' button.
+
+![](mdimages/menu_print_selected.png)
+
+Once the PDF has been created review the output by pressing the 'Preview generated PDF' link.
+
+![](mdimages/menu_print_complete.png)
+
+Reviewing the PDF (shown using the browser viewer).
+
+![](mdimages/menu_print_review.png)
+
+
+
+----
 ----
 
 ### User interface tabs
